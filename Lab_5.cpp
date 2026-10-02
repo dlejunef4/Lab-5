@@ -8,7 +8,8 @@ using namespace std;
 int main() {
 
 
-    char menuChoice;
+    char firstmenuChoice;
+    char secondmenuChoice;
     char sizeChoice;
     string drinkSize;
     string drinkChoice;
@@ -16,6 +17,11 @@ int main() {
     double drinkPrice;
     char memberInput;
     bool isMember = false;
+    double stateTax = 0.065;
+    double countyTax = 0.005;
+    double municipalTax = 0.02125;
+    double tipChoice;
+    double customtipChoice;
     
     cout << "Drink" << setw(23) << "Small" << setw(20) << "Medium"
     << setw(20) << "Large" << endl;
@@ -33,7 +39,7 @@ int main() {
     << setw(20) << "$9.99" << endl;
 
     cout << "Choose a Drink (A,B,C,D): " << endl;
-    cin >> menuChoice;
+    cin >> firstmenuChoice;
 
     cout << "Choose a Size (S  M  L): " << endl;
     cin >> sizeChoice;
@@ -44,7 +50,7 @@ int main() {
     cout << "Are you a member(y/n)? ";
     cin >> memberInput;
 
-    switch(toupper(menuChoice)) {
+    switch(toupper(firstmenuChoice)) {
 
         case 'A':
         drinkChoice = "Water";
@@ -118,17 +124,59 @@ int main() {
 
     double subTotal = quantity * drinkPrice;  //subtotal
     double discount = isMember ? (subTotal * 0.10) : 0.0;
-    double total = subTotal - discount;
 
+    double pretaxTotal = (subTotal - discount);
+    double statetaxApplied = pretaxTotal * stateTax;
+    double countytaxApplied = pretaxTotal * countyTax;
+    double municipaltaxApplied = pretaxTotal * municipalTax;
+    double totalTaxes = statetaxApplied + countytaxApplied + municipaltaxApplied;
 
+    double total = pretaxTotal + totalTaxes;
+
+    double fivePercent = total * 0.05;
+    double tenPercent = total * 0.1;
+    double fiftenPercent = total * 0.15;
+
+    cout << fixed << setprecision(2);
+
+    cout << "Tip Selection" << setw(14) << "Amount" << endl;
+
+    cout << "A: 5%" << setw(20) << fivePercent << endl;
+
+    cout << "B: 10%" << setw(19) << tenPercent << endl;
+
+    cout << "C: 15%" << setw(19) << fiftenPercent << endl;
+
+    cout << "D: Custom" << endl;
+
+    cin >> secondmenuChoice;
+
+    switch(toupper(secondmenuChoice)){
+        case 'A':
+            tipChoice = fivePercent;
+            break;
+        case 'B':
+            tipChoice = tenPercent;
+            break;
+        case 'C':
+            tipChoice = fiftenPercent;
+            break;
+        case 'D':
+            cout << "How much would you like to tip?" << endl;
+            cin >> customtipChoice;
+            tipChoice = customtipChoice;
+            
+
+    }
+
+    double totalplusTip = total + tipChoice;
 
     cout << "\n\n";
     cout << "=========================================================" << endl;
     cout << "                     PURCHASE RECEIPT                    " << endl;
     cout << "=========================================================" << endl;
 
-
-    cout << fixed << setprecision(2);             // Receipt
+    // Receipt
 
     cout << left <<setw(20) << "Drink"
          << left <<setw(8) << "Size"
@@ -148,9 +196,26 @@ int main() {
      cout << left << setw(25) << "Discount Amount:"
           << right << setw(15) << "-$" << discount << endl;
     }
+
+    cout << "=========================================================" << endl;
+
+
+    cout << left << setw(25) << "State Tax (6.5%):"
+         << right << setw(15) << "+$" << statetaxApplied << endl;
+
+    cout << left << setw(25) << "County Tax (0.5%):"
+         << right << setw(15) << "+$" << countytaxApplied << endl;
+
+    cout << left << setw(25) << "Municipal Tax (2.125%):"
+         << right << setw(15) << "+$" << municipaltaxApplied << endl;
      
+    cout << "=========================================================" << endl;
+
+    cout << left << setw(25) << "Tip Amount:"
+         << right << setw(15) << "+$" << tipChoice << endl;
+
     cout << left << setw(25) << "Total Due:"
-          << right << setw(15) << "$" << total << endl;
+          << right << setw(15) << "$" << totalplusTip << endl;
 
 
 
